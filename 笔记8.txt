@@ -1,0 +1,113 @@
+object类->最高的参数统一化->JDK默认提供的类。Java中除了object类，所有类都存在继承关系，默认会继承object父类。
+一.toString()->取得对象信息
+1.系统输出默认调用对象的toString()方法
+2.object类中的toString()方法只是简单输出当前所引用的类名称以及对象地址。如果想在类中取得本类属性信息，需要覆写toString()
+
+eg:
+class Person{
+  private String name;
+  private int age;
+  public Person(String name,int age){
+    this.name = name;
+    this.age = age;
+    }
+public String toString(){
+  return this.name + this.age;
+  }
+}
+
+public class Test{
+  public static void main(String[] args)throws Exception{
+    Person per = new Person("邹鸡儿",18);
+    System.out.println(per);
+  }
+}
+
+二.equals方法
+
+eg:
+class Person{
+  private String name;
+  private int age;
+  public Person(String name,int age){
+    this.name = name;
+    this.age = age;
+    }
+
+public boolean equals(Object obj){
+  //1.首先判断obj是否属于Person类
+  if(!(obj instanceof Person)){
+    return false;
+    }
+  //2.判断当前对象是否和传入地址相同
+  if(this == obj){
+    return true;
+    }
+  //3.obj确实是Person对象，比较二者属性内容
+  //4.向下转型取得Person属性值
+  Person per = (Person)obj;
+  return(this.name.equals(per.name))&&(this.age == per.age);
+  }
+}
+
+public class Test{
+public static void main(String[] args)throws Exception{
+Person per1 = new Person("邹鸡儿",81);
+Person per2 = new Person("邹小鸡",18);
+System.out.println(per1.equals(per2));
+}
+}
+
+三.接收引用数据类型
+Object可以接收所有引用数据类型（不包括基本数据类型）：数组、类、接口
+
+四.包装类：将基本数据类型封装到类中
+产生原因：Object不接收基本数据类型，为了使object接收一切东西，将基本数据类型包装成类
+1.包装类的分类
+A.数值类的包装类（Number的直接子类）：Byte，Double，Short，Long，Float，Integer(int)
+运行时异常：NumberFormatException
+B.对象型包装类（Object的直接子类）：Boolean，Character(char)
+
+2.装箱与拆箱
+装箱：将基本数据类型变为包装类对象。利用每个包装类提供的构造方法实现。
+拆箱：将包装类中包装的基本数据类型取出。利用XXValue()。
+
+Integer i = new Integer(10);//手工装箱
+int result = i.intValue();//手工拆箱
+//JDK1.5提供自动拆装箱
+Integer i2 = 10；//自动装箱
+对于Integer var = ？在[-128~127]的赋值，Integer对象在常量池产生，会复用已有对象（这时可以直接用“==”比较，但是它实际上比较的还是地址），这个区间外的数据都在堆上产生，不会复用已有对象。所以比较时用equals。
+
+Integer i1 = 10；
+Integer i2 = 10；
+i1 == i2；//true
+Integer i1 = 200；
+Integer i2 = 200；
+i1 == i2；//false
+阿里编码规范：int or Integer
+A.强制要求：所有POJO类（简单Java类：类中只有成员变量、构造方法、getter/setter）属性必须使用包装类
+B.强制要求：RPC方法返回值和参数必须使用包装类
+C.推荐：所有局部标量使用基本类型
+
+3.包装类与字符串转换
+A.String->基本数据类型
+包装类.parseXX(str)
+String->int : Integer.praseInt(str)
+B.基本数据类型->String
+a.""+基本数据类型
+b.String类提供的静态方法valueOf(基本类型)，它不产生垃圾空间
+
+五.包的定义与使用
+1.包就是文件夹，写主类之前先定义包。
+在源文件首行：package 包名称
+
+2.打包编译命令：
+javac -d . Test.java
+-d:根据package定义的包名称创建生成目录
+.：在当前目录下生成
+
+3.执行需要使用全名称：包名.类名
+java www.bit.java.Test
+
+4.自动打包编译命令：将当前路径下所有源文件按照主类的使用情况主动编译
+javac -d . ./*.java

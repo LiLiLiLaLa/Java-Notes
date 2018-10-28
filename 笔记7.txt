@@ -1,0 +1,125 @@
+String类
+1.String的两种实例化方式
+a.直接赋值（用的最多，推荐）
+
+eg:String str = "hello";
+b.通过构造方法实例化String对象
+
+eg:String str = new String("hello");
+
+2.字符串相比较
+
+str.equals(str1)
+eg:public boolean equals(String str1)
+
+3.字符串常量是String类的匿名对象
+
+4.在进行指定内容比较时，将指定内容（字符串常量）写前面，避免NullPointerException
+
+5.在JVM底层自动维护一个字符串对象池
+如果采用直接赋值的模式String类的实例化操作，对此对象讲自动保存到对象池中，如果继续采用直接赋值模式声明String对象，先去对象池找指定内容，如果有，直接引用，如果没有，开辟新的空间而后将他保存到内存池供下次使用
+直接比较
+
+String str = “hello”；
+String str = new String("hello");
+System.out.println(str == str1);
+字符串手工入池
+
+public native String.intern();
+
+6.字符串常量不可变更（常量内容不可变）：字符串常量一旦定义不可变更
+A.String<->char
+a. 字符数组char[]->String:String类构造方法
+
+public String(char[] value1)
+public String(char[] value1,int offset,int count)
+b.将字符串按索引转为单个字符（索引从0开始）
+String->char
+
+public char charAt(int index)
+c.将字符串转化为字符数组
+String<->char[]
+
+public char[] toCharArray();
+B.字节与字符串
+a.byte[]->String：String类构造方法
+
+public String(byte[] bytes)
+b.String->byte[]
+
+public byte[] getBytes()//构造方法
+public byte[] getBytes(String charset);//按照指定编码转为字节数组
+
+7.字符串比较
+A.不区分大小写的相等比较
+
+public boolean equalsIgnoreCase(Strng anotherString)
+B.比较两个字符串的大小关系
+
+public int compareTo(String anotherString)
+返回值有三种情况：
+>0：表示本字符串大于目标字符串
+=0：表示两者相等
+<0:表示本字符串小于目标字符串
+
+8.字符串查找
+A.判断指定字符串是否存在
+
+public boolean contains(String str)
+B.判断是否以指定字符串开头
+
+public boolean startsWith(String prefix)
+public boolean startsWith(String prefix,int offset)//offset为偏移量，表示从偏移量开始以指定字符串开头
+C.判断是否已指定字符串结尾
+public boolean endsWith(String suffix)
+
+9.字符串替换
+将目标字符串全部替换
+
+public String replaceAll(Sreing regex,String replacement)
+eg:str.replaceAll("1","_")
+
+10.字符串拆分
+当regex为特殊字符，则需要使用"\\"转义eg:\\.
+
+public String[] split(String regex)//将字符串按照regex全部拆分
+public String[] split(String regex,int limit)//将字符串拆按照regex分成指定个数字符串
+
+11.字符串截取
+
+public String substring(int beginindex)//从指定索引截取到结尾
+public String substring(int beginindex,intendindex)//从指定索引截部分内容（左闭右开）
+
+12.字符串其他操作
+A.去除字符串左右空格，保留中间空格
+
+public String trim()
+B.字符串大小写转换（全部转换）
+
+public String toUpperCase()
+public String toLowerCase()
+C.判断字符串是否为空字符串("")，不判断null
+
+public boolean isEmpty()
+D.两只sb(StringBuffer,StringBuider)->面试
+a.字符串拼接方法
+
+public synchronized StringBuffer append(各种数据类型)//synchronized表示多线程环境下才安全
+b.StringBuffer和String类的相互转换
+b1.String->StringBuffer
+b11.append方法
+b12.调用StringBuffer的构造方法 new StringBuffer("");
+b2.StringBuffer->String
+调用StringBuffer.toString();
+c.StringBuffer常用操作方法
+c1.字符串反转
+
+reverse() : StringBuffer(支持所有语言)
+c2.删除或修改指定范围数据
+
+delete(int start,int end) : StringBuffer
+insert(int offset,各种数据类型) ： StringBuffer
+
+*面试*   请解释String、StringBuffer和StringBuider的区别
+1.String内容不可改变，两只sb内容可改变
+2.StringBuffer（JDK1.0），采用同步处理，线程安全，效率较低；StringBuider（JDK1.5），采用异步处理，线程不安全，但是效率高。当在String对象进行“+”，编译会将String类变为StringBuider进行apend()处理。

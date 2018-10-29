@@ -111,3 +111,12 @@ java www.bit.java.Test
 
 4.自动打包编译命令：将当前路径下所有源文件按照主类的使用情况主动编译
 javac -d . ./*.java
+
+六.访问权限控制：本包下的所有源文件可以互相调用属性与方法
+private<default(包访问权限)<protected(继承访问权限)<public
+1.JDK中常用包
+java.long:系统常用基础类(Object,String(sb),包装类)，此包在JDK1.1后自动导入
+java.util包：java提供的工具程序包（重要），类集（ArrayList,HashMap）
+j.u.c包：java.util.concurrent
+
+2.继承访问权限：protected

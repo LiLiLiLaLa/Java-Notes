@@ -12,7 +12,6 @@ public static int add(int[] data){
 }
 语法：数据类型 ... 可变参数名称
 int ... data
-
 //可变参方法
 public static int add(int ... data){
     int result = 0;

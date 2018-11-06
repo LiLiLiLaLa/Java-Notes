@@ -12,6 +12,7 @@ public static int add(int[] data){
 }
 语法：数据类型 ... 可变参数名称
 int ... data
+
 //可变参方法
 public static int add(int ... data){
     int result = 0;
@@ -65,12 +66,16 @@ eg:? extends Number：表示方法参数只能接收Number及其子对象
 表示方法入参只能接收类以及其父类对象
 方法 参数设置泛型下限不仅可以取得类重中属性值，还可以设置属性值，子类可以天然向上转型变为父亲
 
-2.4泛型方法
-2.4.1
-2.4.2
+2.4泛型接口
+interface IInterface<T>{}
+2.4.1.子类在接口继续保留泛型
+class InterfaceImpl<T>implements IIterface<T>{}
+2.4.2.子类实现接口时就确定好类型
+class InterfaceImpl<T>implements IInterface<String>{}
 
 2.5泛型擦除：
-泛型类进入JVM之前，会进行类型擦除，泛型类的类型参数如果没有指定类型上限，则被擦成Object类，如果类型参数指定类型上限，擦除为指定参数类型   
+泛型信息仅存在于代码阶段，进入JVM之前，与泛型相关信息会被擦除掉，专业术语就叫类型擦除。换句话说，泛型类与普通类在JVM中没有差别。
+泛型类进入JVM之前，会进行类型擦除，泛型类的类型参数如果没有指定类型上限，则被擦成Object类，如果类型参数指定类型上限，擦除为相应类型上限。
 
 3.枚举
 java中枚举使用enum关键字定义枚举->枚举是一种多例设计模式

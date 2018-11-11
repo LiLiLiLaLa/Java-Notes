@@ -1,0 +1,102 @@
+1.概念
+进程：操作系统（OS）中一个程序的执行周期
+线程：进程中的一个任务，一个进程中包含N个线程
+
+2.进程和线程区别
+2.1.每个进程拥有自己的一整套变量，是操作系统中资源分配的最小单位，线程依托于进程存在，多个线程共享进程资源，是操作系统中任务调度的基本单位。
+2.2.启动、撤销一个进程开销要比启动、撤销一个线程大得多（线程轻量级）。
+2.3.没有进程就没有线程，进程一旦终止，其内的线程全部撤销。
+
+高并发：同一时刻，线程的访问量非常非常高。
+
+DDos攻击
+
+3.Java多线程实现
+3.1.继承Thread类实现多线程
+java.lang.Thread是线程操作的核心类，JDK1.0提供，新建一个线程最简单的方法就算直接继承Thread类而后覆写类中的run()方法（相当于主方法）。
+无论哪种方法实现多线程，线程启动一律调用Thread类提供的start()方法，如果调用run()方法就相当于只是简单地调用了一个方法。
+
+3.2.start方法解析
+3.2.1.首先检查线程状态是否为0（线程默认状态为0表示尚未启动），如果线程已经启动再次启动start抛出IllegalThreadStarteException异常，一个线程的start()只能调用一次。
+
+3.2.2.private native void start0();通过start0真正将线程启动。
+
+3.2.3.JVM调用start0方法进行资源分配与系统协调，准备好资源启动线程后回调run()来执行线程具体任务。
+
+3.3.Runable接口实现多线程
+3.3.1.Java中多线程的处理就算一个典型的代理模式，其中Thread类完成资源调度、系统分配辅助线程业务类；自定义的线程负责真实业务实现。
+
+3.3.2.使用Runable接口实现多线程程序类可以更好地描述资源共享。
+
+3.3.3.Callable<V>接口实现多线程——唯一一个有返回值的线程实现方式
+juc:高并发程序包
+java.util.concurrent.Callable<V>;
+V call() throws Exception：线程执行后有返回值
+
+java.util.Future<V>;
+V get() throws InterruptedException,ExecutionException:取得Callable接口的call方法返回值。
+
+当线程需要返回值时只能采用Callable接口实现多线程。
+
+4.多线程常用操作方法
+4.1线程的命名与取得
+4.1.1.通过构造方法将线程命名
+public Thread(String name)
+public Thread(Runable target,String name)
+
+4.1.2.设置线程名称
+public final synchronized void setName(String name)
+
+4.1.3.取得线程名称
+public final String getName()
+
+4.1.4.取得当前正在执行的线程对象
+public static native Thread currentThread()
+
+4.1.5.java中的main方法其实就是主线程，名字就是main
+
+4.2.线程休眠（sleep）（单位是long millis，毫秒）
+线程休眠：指让线程暂缓执行，等到预计时间再恢复。线程休眠会立即交出CPU，让CPU去执行其他任务，但是线程休眠不会释放对象锁。（从运行到阻塞，到就绪）
+
+4.3.线程让步（yield）
+暂停当前正在执行的线程对象，并执行其他线程。yield()会让当前线程交出CPU，但是不会立即交出，yield()交出CPU后只能让拥有相同优先级的线程有获取CPU的机会，并且不会释放对象锁。（从运行到就绪）
+
+4.4.join()方法
+等待该线程终止。如果在主线程中调用该方法会让主线程休眠，让调用该方法的线程执行完毕后再恢复主线程。会释放对象锁（运行态回到阻塞态，到就绪态）
+join()只是对Object类wait()做了一层包装
+
+4.5.线程停止
+4.5.1.手工设置标记位，让线程在满足条件后退出（推荐）
+
+4.5.2.使用stop方法，强制让线程（立马）退出，但是该方法不安全，已经被@Deprecated（过期）
+
+4.5.3.使用Thread类提供的interrupt()中断线程
+interrupt()只是将线程状态改为中断状态而已，并不会中断一个正在运行的线程
+如果线程调用了wait(),sleep(),join()方法进入阻塞态，调用该线程的interrupt()会抛出一个异常（InterruptedException），并且会把线程的interrupt重置为false。
+
+4.6.线程优先级
+线程的优先级是指优先级越高线程可能先执行而已，仅仅是可能
+4.6.1.设置优先级
+public final void setPriority(int newPriority)
+4.6.2.取消优先级
+public final int getPriority()
+
+4.6.3.Thread.MAX_PRIORITY = 10;
+Thread.NORM_PRIORITY = 5;
+Thread.MIN_PRIORITY = 1;
+
+4.6.4.线程的继承性：优先级可以继承
+在A线程中启动B线程，则A和B优先级一样
+
+
+
+
+
+
+
+
+
+
+
+
+

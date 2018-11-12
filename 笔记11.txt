@@ -1,4 +1,4 @@
-1.概念
+﻿1.概念
 进程：操作系统（OS）中一个程序的执行周期
 线程：进程中的一个任务，一个进程中包含N个线程
 
@@ -72,12 +72,14 @@ join()只是对Object类wait()做了一层包装
 
 4.5.3.使用Thread类提供的interrupt()中断线程
 interrupt()只是将线程状态改为中断状态而已，并不会中断一个正在运行的线程
-如果线程调用了wait(),sleep(),join()方法进入阻塞态，调用该线程的interrupt()会抛出一个异常（InterruptedException），并且会把线程的interrupt重置为false。
+如果线程调用了wait(),sleep(),join()方法进入阻塞态，调用该线程的interrupt()会抛出一个异常（InterruptedException，是一个受查异常），并且会把线程的interrupt重置为false。
 
 4.6.线程优先级
 线程的优先级是指优先级越高线程可能先执行而已，仅仅是可能
-4.6.1.设置优先级
+
+4.6.1.设置优先级（左1右10闭区间）
 public final void setPriority(int newPriority)
+
 4.6.2.取消优先级
 public final int getPriority()
 
@@ -87,6 +89,18 @@ Thread.MIN_PRIORITY = 1;
 
 4.6.4.线程的继承性：优先级可以继承
 在A线程中启动B线程，则A和B优先级一样
+
+4.7.守护线程（后台线程）：守护线程是一种特殊的线程，属于陪伴线程
+4.7.1.Java中有两种线程：守护线程和用户线程
+典型的守护线程：垃圾回收线程
+
+4.7.2.只要当前JVM进程中存在任何一个用户线程没有结束，守护线程就一直在工作；只有当最后一个用户线程停止后，守护线程会随JVM进程一起停止。
+
+4.7.3.setDaemon()将当前线程设置为守护线程
+
+4.7.4.Java中启动的线程默认为用户线程，包括主线程
+
+
 
 
 

@@ -1,4 +1,4 @@
-线程操作的类在Object类中：任意对象都有一个同步队列即等待获取对象的monitor，任何对象都有监视器，任何一个对象都可以等待。
+对象线程操作的类在Object类中：任意对象都有一个同步队列即等待获取对象的monitor，任何对都有监视器，任何一个对象都可以等待。
 
 1.生产-消费者问题
 1.1.wait()方法
@@ -24,7 +24,7 @@ notify()方法调用后，当前对象不会立马释放对象锁，要等到当前线程执行完毕后再释放锁
 1.3.notifyAll()：唤醒（该对象）所有处于等待状态的线程
 
 1.4.线程由运行态—>阻塞（wait）
-1.4.1.调用sleep(),立刻交出CPU，++++++++++++++++++++++++++++++++++++++++++++++++++++++++不释放锁
+1.4.1.调用sleep(),立刻交出CPU，不释放锁
 1.4.2.线程调用阻塞式IO（BIO）方法
 1.4.3.线程获取锁失败进入阻塞状态
 1.4.4.线程调用wait()
@@ -32,44 +32,39 @@ notify()方法调用后，当前对象不会立马释放对象锁，要等到当前线程执行完毕后再释放锁
 
 每个锁对象都有两个队列，一个等待队列一个同步队列，同步队列存储获取锁失败的线程，等待队列存储调用wait()等待的线程，将线程唤醒实际上是将处于等待队列的线程移动到同步队列去竞争锁
 
+2.Lock
+JDK1.5之后增加Java.Util.concurrent.locks提供了与内建锁完全不同的实现多线程共享资源访问机制。失去了内建锁隐式地加锁与解锁过程，增加了可中断的获取锁以及超时获取锁以及共享锁等内建锁不具备的特性。
 
+Lock锁的标准使用形式：
 
+Lock lock = new ReentrantLock();
+try{
+     lock.lock();
+     //同步块
+}finally{
+     lock.unlock();
+}
+2.1.lock接口API
+2.1.1.void lock();//获取锁
+2.1.2.void lockinterruptibly() throws InterruptedException;//获取锁的过程能响应中断（lock独有）
+2.1.3.boolean tryLock();//获取锁返回true，反之返回false。可响应中断
+2.1.4.boolean tryLock(long time,TimeUnit unit);//在三的基础上增加了超时等待机制，规定时间内未获取到锁，线程直接返回（lock独有）
+2.1.5.void unlock();//解锁
 
+2.2.AbstractQueuedSynchronizer（同步器），lock体系最核心的存在
 
+同步器作用：用来构建锁与其他同步组件的基础框架，它的实现主要依赖一个int成员变量来表示同步状态以及通过一个FIFO队列形成同步队列，要使用AQS，推荐使用静态内部类继承AQS，覆写AQS中的protected用来改变同步状态的方法，其他方法主要是实现排队与阻塞机制。状态更新使用getState()、setState()、compareAndSetState()。
 
+lock面向使用者，定义了使用者与锁交互的接口，隐藏了实现细节，AQS面向锁的实现者，简化了锁的实现方式屏蔽同步状态的管理、线程排队、线程等待与唤醒等底层操作。
 
+2.3.AQS提供的模板方法
+独占锁
+A.void acquire(int arg):独占式获取同步状态，如果获取失败则将当前线程插入同步队列进行等待
+B.void acquireInterruptibly(int arg):在A的基础上增加响应中断
+C.void acquireInterruptibly(int arg,long nanosTimeOut):在B的基础上增加超时等待，在规定时间为获取到同步状态返回false
+D.boolean tryAcquire(int arg):获取状态成功返回true，否则返回false
+E.boolean release(int arg):释放同步状态，该方法会唤醒在同步队列中的下一个结点
 
+共享锁
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1
+AQS中的同步队列是一个带有头尾的双向链表，节点组成为：Node prev,Node next，Thread thread，将线程封装为Node结点后进行入队与出队处理。

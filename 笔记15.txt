@@ -1,0 +1,63 @@
+1.线程池三个优点
+A.降低资源消耗：通过重复利用已创建的线程降低线程创建与销毁带来的消耗
+B.提高响应速度：当任务到达时，无需等待线程创建就可以立即执行
+C.提高线程可管理性：使用线程池可以统一进行线程分配、调度与监控
+
+2.线程池的继承关系
+
+
+ExecutorService(普通调度池核心接口)
+submit(Callable|Runnable:Future<T>)
+ScheduledExecutorService(定时调度池核心接口)
+Schedule(Runnable|Callable command, long delay, TimeUnit unit);//延迟delay个时间单位后开始执行
+ScheduleAtFixedRate(Runnable command, long initialDelay, long period, TimeUnit unit);//延迟initialDelay个时间单位后开始执行，并且每隔period个时间单位就执行一次
+
+3.线程池执行流程（第一步第三步创建线程需要获得全局锁）
+第一步：判断核心线程池是否已满，如果未满，创建一个新的工作线程来执行这个任务，如果已满，判断是否有空闲线程，有的话将分配给空闲线程，否则执行第二步
+第二步：将判断工作队列（阻塞队列BlockingQueue）是否已满，如果工作队列未满，将任务存储在工作队列中，等待空闲的线程调度，如果工作队列已满，执行第三步
+第三步：判断当前线程池线程数量是否已达到最大值，如果没有达到最大值，创建一个新的线程来执行任务（所创建的线程不在核心线程池），否则执行第四步
+第四步：调用饱和策略来执行此任务
+
+4.线程池的使用
+**4.1.手工创建线程池
+通过new一个ThreadPoolExecutor就可以实现自定义线程池
+
+public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)
+4.1.1.coolPoolSize(核心线程池大小)：当提交一个任务到线程池时，只要核心线程池未达到coolPoolSize，创建新线程来执行任务。调用preStartAllCoreThreads()，线程池会提前创建并启动所有线程。
+
+4.1.2.BlockingQueue<Runnable>workQueue(任务队列)：保存等待执行任务的阻塞队列
+A.ArrayBlockingQueue：基于数组的有界阻塞队列，按照FIFO原则对元素进行排序
+B.LinkedBlockingQueue：基于链表的阻塞队列，按照FIFO排列元素。吞吐量要高于ArrayBlockingQueue。内置线程池newFixedThreadPool-固定大小的线程池就采用此队列
+C.CynchronousQueue：一个不存储元素的阻塞队列（无界队列）。每个插入操作需要等待另一个线程的移除操作，否则插入操作一直处于阻塞状态。吞吐量通常高于LinkedBlockingQueue。内置线程池newCachedThreadPool-缓存线程池就采用此队列
+D.PriorityBlockingQueue：具有优先级的阻塞队列。
+
+4.1.3.maximumPoolSize（线程池最大数量）
+
+4.1.4keepAliveTime（线程池保持活动时间）：线程池的工作线程空闲后，保持存活的时间。任务较多，并且每个任务执行的时间比较短，可以调大此参数来提高线程利用率
+
+4.1.5.RejectedExecutionHandler（饱和策略）：
+AbortPolicy：无法处理新任务抛出异常（JDK默认采用此策略）
+CallerRunsPolicy：使用调用者所在线程来处理任务
+DisCardoldestPolicy：丢弃队列中最近的一个任务并执行当前任务
+DisCardPolicy：不处理任务，丢弃任务，也不报异常
+
+5.调用Future接口的get方法会阻塞其他线程，直到取得当前线程执行完毕后的返回值
+
+FutureTask中的任务只会被执行一次。
+
+6.线程池使用完毕后要使用executorService.shutdown()来关闭
+
+7.内置四大线程池（Executors工具类中）
+7.1.固定大小线程池FixedThreadPool
+固定大小线程池适用于为了满足客户资源管理需求，而需要限制当前线程数量的应用，适用于负载较重的服务器。
+
+7.2.单线程池SingleThreadPool
+适用于需要保证顺序执行各个任务；并且在意时间，不会有多线程
+
+7.3.缓存线程池CachedThreadPool
+根据需要创建新线程。
+return new ThreadPoolExecutor(...)
+当提交任务速度快于执行任务速度，缓存线程池不会创建新线程。大小无界线程池，适用于执行很多短期的异步小程序，或者负载较轻的服务器。
+
+7.4.定时调度池ScheduledThreadPoolExecutor(int nThread)
+需要定时执行场景。

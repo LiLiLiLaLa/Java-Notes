@@ -1,0 +1,98 @@
+JavaIO——BIO（阻塞式IO）——基于抽象类
+java.io
+核心五个类(File,OutputStream ,InputStream,Reader,Writer) + 一个接口(Serializable)
+
+1.File文件操作类——既可以描述具体文件也可以描述文件夹
+File是唯一一个与文件本身操作（创建、删除、取得信息）有关的程序类
+
+//产生File对象
+public File(String pathname):根据文件的绝对路径来产生File对象
+public File(URI uri):根据网络产生对象
+1.1.常用操作方法
+//创建新文件
+
+public boolean createNewFile() throws IOException
+//判断文件是否存在
+
+public boolean exists()
+//删除文件
+
+public boolean delete()
+//文件分隔符
+
+File.separator
+
+1.2.与目录相关的操作
+//取得父路径的File对象
+
+public File getParentFile()
+//取得父路径的目录
+
+public String getParent()
+//创建多级父路径(一次性创建多级不存在的父路径)
+
+public boolean mkdirs()
+
+1.3.取得文件信息
+//判断File对象是否是文件
+
+public boolean isFile()
+//判断File对象是否是文件夹
+
+public boolean isDirectory()
+//取得文件大小——字节为单位
+
+public long length()
+//取得上次修改时间
+
+public long lastModified()
+//列出一个目录的全部组成
+
+public File[] listFiles()
+
+2.字节与字符流
+java.io中流分为两类：输入流与输出流
+
+字节（byte）流（不经过第三方）：原生操作，无需转换，可以处理文本文件、图像、音乐、视频等资源
+InputStream，OutputStream
+
+字符（char）流（经过第三方）：经过处理后的操作，只用于处理中文文本
+Reader，Writer
+
+流模型的操作流程：
+取得终端对象
+根据终端对象取得输入输出流
+根据输入输出流进行数据读取与写入
+关闭流
+
+IO操作属于资源处理，所有资源处理操作（IO操作，数据库操作，网络操作）在使用后必须关闭
+
+2.1.字节输出流OutputStream
+
+public abstract class OutputStream implements Closeable,Flushable
+Closeable: public void close() throws IOException;  //关闭流方法
+Flushable: public void flush() throws IOException;  //刷新缓存区
+
+核心方法
+
+public void write(byte b[]) throws IOException //将给定的字节数组全部输出
+public void write(byte b[], int off, int len) throws IOException //将给定的字符数组一off位置开始输入len长度后停止输出
+void write(int b) throws IOException //输出单个字节
+
+使用OutputStream输出数据时，若指定的文件不存在，FileOutputStream会自动创建文件
+
+使用OutputStream输出内容时，默认是文件内容的覆盖操作，若要进行文件内容的追加，使用如下构造方法
+
+public FileOutputStream(File file,boolean append)
+
+JDK1.7追加了AutoCloseable自动关闭接口，要使用此接口必须使用try...catch块（了解即可），推荐显式关闭
+
+2.2.字节输入流InputStream
+
+public abstract class InputStream implements Closeable
+public int read(byte b[]) throws IOException //将读取的内容放入字节数组中
+
+返回值有如下三种情况：
+A.返回b.length：未读取的数据大于存放的缓存区大小，返回字节数组大小
+B.返回大于0的整数：此整数小于b.length,未读取的数据小于缓存区大小，返回数组大小
+C.返回-1：此时数据已经读取完毕

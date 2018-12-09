@@ -56,8 +56,10 @@ java.io中流分为两类：输入流与输出流
 字节（byte）流（不经过第三方）：原生操作，无需转换，可以处理文本文件、图像、音乐、视频等资源
 InputStream，OutputStream
 
+
 字符（char）流（经过第三方）：经过处理后的操作，只用于处理中文文本
 Reader，Writer
+
 
 流模型的操作流程：
 取得终端对象
@@ -91,8 +93,81 @@ JDK1.7追加了AutoCloseable自动关闭接口，要使用此接口必须使用try...catch块（了解即
 
 public abstract class InputStream implements Closeable
 public int read(byte b[]) throws IOException //将读取的内容放入字节数组中
-
 返回值有如下三种情况：
 A.返回b.length：未读取的数据大于存放的缓存区大小，返回字节数组大小
 B.返回大于0的整数：此整数小于b.length,未读取的数据小于缓存区大小，返回数组大小
 C.返回-1：此时数据已经读取完毕
+
+2.3.字符输出流Writer
+字符流可以直接支持字符串的输出
+
+public void write(String str) throws Exception
+
+2.4.字符输入流Reader
+字符输入流不同于字符输出流，只能接受字符数组
+
+public int read(char cbuf[]) throws IOException
+字符流若未关闭，数据在缓存区存放，不会输出到目标终端，要想将数据输出，要么将输出流关闭要么使用flush()强制刷新缓存区
+
+3.转换流：可以将字节流转换为字符流，转换方向不可逆
+OutputStreamWriter:将字节输出流变为字符输出流（Writer对于文字的输出要比OutputStream方
+便）
+InputStreamReader:将字节输入流变为字符输入流（InputStream读取的是字节，不方便中文的处理）
+
+字符流的具体子类大都是通过转换流将字节流转为字符流（FileWriter继承转换流）
+
+4.字符编码
+4.1.GBK，GB2312：GBK包含简体和繁体中文，GB2312只包含简体中文
+
+4.2.UNICODE：java提供的16进制编码，可以描述世界上任意一种语言，但是编码进制数太高，编码体积较大
+
+4.3.ISO-8859-1：国际通用编码，不支持中文，浏览器默认编码
+
+4.4.UTF编码：结合UNICODE与ISO-8859-1，最常采用的是UTF-8
+
+4.5.乱码产生原因：九层以上都是由于编解码不一致，少部分原因是因为数据丢失
+编解码：编码，解码，按照自己的格式编码之后传输，收到以后按照自己格式解码还原，二者格式不同就无法达到一致
+
+5.内存流（以内存为终端的输入输出流）
+字节内存流
+ByteArrayInputStream / ByteArrayOutputStream
+
+字符内存流
+CharArrayReader / CharArrayWriter
+
+将指定字符数组内容放到内存中
+public ByteArrayInputStream(byte buf[])
+public ByteArrayOutputStream()
+
+6.打印流（输出流的强化版本）
+字节打印流：PrintStream
+字符打印流：PrintWriter
+
+打印流的设计属于装饰设计模式——基于抽象类
+特点：核心依旧是某个类（OutPutStream提供的Writer())的功能，但为了得到更好地操作效果，让其支持的功能更多一些，使用装饰类（PrintStream）
+装饰设计模式的优点：很容易更换装饰类来达到不同的操作效果
+缺点：由于装饰设计模式的引入造成类结构复杂
+
+7.System类对于IO的支持
+标准输出：显示屏：System.out//显示屏对象
+标准输入：键盘：System.in//键盘输入对象
+错误输出：System.err//错误对象
+
+7.1.系统输出
+系统提供的out与err对象均是PrintStream的对象，二者输出到显示器颜色不同，前黑后红
+
+以后输出采用日志Log——格式化输出
+
+7.2.系统输入
+System.in是InputStream的直接对象
+
+8.两种输入流
+8.1.BufferReader/BufferInputStream
+readline()直接读取一行输入，默认以回车换行
+
+8.2.java.util.Scanner
+支持正则表达式
+
+hasNextXX():判断是否有指定类型数据输入
+nextXX():获取指定类型数据
+useDelimiter("指定分隔符")

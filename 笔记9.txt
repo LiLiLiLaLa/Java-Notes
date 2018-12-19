@@ -1,5 +1,5 @@
-Ò».µ¥ÀýÄ£Ê½£ºÒ»¸öÀàÖ»ÔÊÐí²úÉúÒ»¸öÊµÀý»¯¶ÔÏó£¨Ã»ÓÐÒªÇó¾ÍÐ´¶öººÊ½µ¥Àý£©
-ÀÁººÊ½µ¥Àý£¨ÓÐÏß³Ì°²È«ÎÊÌâ£¬²¢·¢ºÜ¸ßÊ±¿ÉÄÜ³öÏÖÁ½¸ö¶ÔÏó£©£ºÓÃÊ±ÔÙnew
+ä¸€.å•ä¾‹æ¨¡å¼ï¼šä¸€ä¸ªç±»åªå…è®¸äº§ç”Ÿä¸€ä¸ªå®žä¾‹åŒ–å¯¹è±¡ï¼ˆæ²¡æœ‰è¦æ±‚å°±å†™é¥¿æ±‰å¼å•ä¾‹ï¼‰
+æ‡’æ±‰å¼å•ä¾‹ï¼ˆæœ‰çº¿ç¨‹å®‰å…¨é—®é¢˜ï¼Œå¹¶å‘å¾ˆé«˜æ—¶å¯èƒ½å‡ºçŽ°ä¸¤ä¸ªå¯¹è±¡ï¼‰ï¼šç”¨æ—¶å†new
 
 class Singleton1{
     public static Singleton1 s;
@@ -11,55 +11,54 @@ class Singleton1{
         return s;
     }
 }
-¶öººÊ½µ¥Àý£ºÏÈnewÎª¾´
+é¥¿æ±‰å¼å•ä¾‹ï¼šå…ˆnewä¸ºæ•¬
 
 class Singleton{
-    private static final Singleton SINGLETON = new Singleton();//finalÊÇÎªÁË²»ÈÃ±ðÈË¸ü¸Ä
+    private static final Singleton SINGLETON = new Singleton();//finalæ˜¯ä¸ºäº†ä¸è®©åˆ«äººæ›´æ”¹
     private Singleton(){}
     public static Singleton getSingleton(){
         return SINGLETON;
     }
 }
 
-¶þ.¶àÀýÄ£Ê½£ºÖ»ÊÇ±Èµ¥ÀýÄ£Ê½¶àÁËÐ©ÄÚ²¿ÊµÀý»¯¶ÔÏó¶øÒÑ
-ÎÞÂÛµ¥Àý»¹ÊÇ¶àÀý£º
-a.¹¹Ôì·½·¨Ë½ÓÐ»¯
-b.ÀàÄÚ²¿Ìá¹©¾²Ì¬·½·¨·µ»ØÓÐÏÞ¸öÊý¶ÔÏó
+äºŒ.å¤šä¾‹æ¨¡å¼ï¼šåªæ˜¯æ¯”å•ä¾‹æ¨¡å¼å¤šäº†äº›å†…éƒ¨å®žä¾‹åŒ–å¯¹è±¡è€Œå·²
+æ— è®ºå•ä¾‹è¿˜æ˜¯å¤šä¾‹ï¼š
+a.æž„é€ æ–¹æ³•ç§æœ‰åŒ–
+b.ç±»å†…éƒ¨æä¾›é™æ€æ–¹æ³•è¿”å›žæœ‰é™ä¸ªæ•°å¯¹è±¡
 
-Èý.Òì³£ÌåÏµ
-Error£ºÃèÊöJavaÔËÐÐÊ±ÄÚ²¿´íÎóÓë×ÊÔ´ºÄ¾¡´íÎó¡£ÕâÖÖÄÚ²¿´íÎóÒ»µ©³öÏÖ£¬³ýÁË¸æÖªÓÃ»§²¢Ê¹³ÌÐò°²È«ÖÕÖ¹ÒÔÍâ£¬ÔÙÎÞÄÜÎªÁ¦¡£
-Exception£¨³ÌÐò³ö´í£©£º
-A.IOException£º³ÌÐò±¾ÉíÃ»ÎÊÌâ£¬ÓÉÓÚIO´¦Àíµ¼ÖÂµÄ³ÌÐò´íÎó
-RuntimeException£ºÓÉÓÚ³ÌÐò´íÎóµ¼ÖÂµÄ
-·ÇÊÜ²éÒì³££¨ÎÞÐèÇ¿ÖÆ´¦Àí£©£º¼Ì³ÐÓÚError»òRuntimeException£¨¿ÕÖ¸ÕëÒì³££¬ÀàÐÍ×ª»»Òì³££¬Êý×éÔ½½çÒì³££©µÄÒì³£Àà³ÆÎª·ÇÊÜ²éÒì³£
-ÊÜ²éÒì³££¨±ØÐëÇ¿ÖÆ´¦Àí£©£ºÖ±½Ó¼Ì³ÐÓÚExceptionÓëIOExceptionµÄ³ÆÎªÊÜ²éÒì³£
+ä¸‰.å¼‚å¸¸ä½“ç³»
+Errorï¼šæè¿°Javaè¿è¡Œæ—¶å†…éƒ¨é”™è¯¯ä¸Žèµ„æºè€—å°½é”™è¯¯ã€‚è¿™ç§å†…éƒ¨é”™è¯¯ä¸€æ—¦å‡ºçŽ°ï¼Œé™¤äº†å‘ŠçŸ¥ç”¨æˆ·å¹¶ä½¿ç¨‹åºå®‰å…¨ç»ˆæ­¢ä»¥å¤–ï¼Œå†æ— èƒ½ä¸ºåŠ›ã€‚
+Exceptionï¼ˆç¨‹åºå‡ºé”™ï¼‰ï¼š
+A.IOExceptionï¼šç¨‹åºæœ¬èº«æ²¡é—®é¢˜ï¼Œç”±äºŽIOå¤„ç†å¯¼è‡´çš„ç¨‹åºé”™è¯¯
+RuntimeExceptionï¼šç”±äºŽç¨‹åºé”™è¯¯å¯¼è‡´çš„
+éžå—æŸ¥å¼‚å¸¸ï¼ˆæ— éœ€å¼ºåˆ¶å¤„ç†ï¼‰ï¼šç»§æ‰¿äºŽErroræˆ–RuntimeExceptionï¼ˆç©ºæŒ‡é’ˆå¼‚å¸¸ï¼Œç±»åž‹è½¬æ¢å¼‚å¸¸ï¼Œæ•°ç»„è¶Šç•Œå¼‚å¸¸ï¼‰çš„å¼‚å¸¸ç±»ç§°ä¸ºéžå—æŸ¥å¼‚å¸¸
+å—æŸ¥å¼‚å¸¸ï¼ˆå¿…é¡»å¼ºåˆ¶å¤„ç†ï¼‰ï¼šç›´æŽ¥ç»§æ‰¿äºŽExceptionä¸ŽIOExceptionçš„ç§°ä¸ºå—æŸ¥å¼‚å¸¸
 
-ËÄ.Òì³£´¦Àí¸ñÊ½
-
+å››.å¼‚å¸¸å¤„ç†æ ¼å¼
 
 try{
-   ¿ÉÄÜ³öÏÖÒì³£µÄÓï¾ä
-}[catch(Òì³£Àà ¶ÔÏó)]{
-   ³öÏÖÒì³£µÄ²Ù×÷
+   å¯èƒ½å‡ºçŽ°å¼‚å¸¸çš„è¯­å¥
+}[catch(å¼‚å¸¸ç±» å¯¹è±¡)]{
+   å‡ºçŽ°å¼‚å¸¸çš„æ“ä½œ
 }[finally]{
-   Òì³£³ö¿Ú
+   å¼‚å¸¸å‡ºå£
 }
 try.....catch....
 try.....finally....
 try.....catch.....finally
-ÎÞÂÛtry catchÖÐÊÇ·ñÓÐ·µ»ØÓï¾ä£¬×îÖÕ¶¼»áÖ´ÐÐfinally¿é
+æ— è®ºtry catchä¸­æ˜¯å¦æœ‰è¿”å›žè¯­å¥ï¼Œæœ€ç»ˆéƒ½ä¼šæ‰§è¡Œfinallyå—
 
-´òÓ¡´íÎó¶ÑÕ»µÄ·½·¨£º
+æ‰“å°é”™è¯¯å †æ ˆçš„æ–¹æ³•ï¼š
 
 e.printStackTrace()
-1.throws¹Ø¼ü×Ö->×÷ÓÃÓÚ·½·¨ÉÏ
-ÔÚ½øÐÐ·½·¨¶¨ÒåÊ±£¬Èç¹ûÒªÃ÷È·¸æËßµ÷ÓÃÕß±¾·½·¨¿ÉÄÜ²úÉúÄÄÐ©Òì³££¬¿ÉÒÔÊ¹ÓÃthrows·½·¨½øÐÐÉùÃ÷£¬±íÊ¾½«Òì³£Å×»Ø¸øµ÷ÓÃ·½£¬²¢ÇÒµ±·½·¨³öÏÖÎÊÌâºó¿ÉÒÔ²»½øÐÐ´¦Àí
+1.throwså…³é”®å­—->ä½œç”¨äºŽæ–¹æ³•ä¸Š
+åœ¨è¿›è¡Œæ–¹æ³•å®šä¹‰æ—¶ï¼Œå¦‚æžœè¦æ˜Žç¡®å‘Šè¯‰è°ƒç”¨è€…æœ¬æ–¹æ³•å¯èƒ½äº§ç”Ÿå“ªäº›å¼‚å¸¸ï¼Œå¯ä»¥ä½¿ç”¨throwsæ–¹æ³•è¿›è¡Œå£°æ˜Žï¼Œè¡¨ç¤ºå°†å¼‚å¸¸æŠ›å›žç»™è°ƒç”¨æ–¹ï¼Œå¹¶ä¸”å½“æ–¹æ³•å‡ºçŽ°é—®é¢˜åŽå¯ä»¥ä¸è¿›è¡Œå¤„ç†
 
-2.throw¹Ø¼ü×Ö->ÓÃÔÚ·½·¨ÖÐ
-throwÓï¾äÖ±½ÓÐ´ÔÚ·½·¨ÖÐ£¬±íÊ¾ÈËÎª½øÐÐÒì³£Å×³ö¡£Èç¹ûÒì³£Àà¶ÔÏó²»Ï£ÍûÓÉJVM²úÉú¶øÍ¨¹ýÓÃ»§²úÉú£¬¾Í¿ÉÒÔÊ¹ÓÃthrowÓï¾äÀ´ÊµÏÖ¡£Ò»°ãÓë×Ô¶¨ÒåµÄÒì³£Àà´îÅäÊ¹ÓÃ¡£
+2.throwå…³é”®å­—->ç”¨åœ¨æ–¹æ³•ä¸­
+throwè¯­å¥ç›´æŽ¥å†™åœ¨æ–¹æ³•ä¸­ï¼Œè¡¨ç¤ºäººä¸ºè¿›è¡Œå¼‚å¸¸æŠ›å‡ºã€‚å¦‚æžœå¼‚å¸¸ç±»å¯¹è±¡ä¸å¸Œæœ›ç”±JVMäº§ç”Ÿè€Œé€šè¿‡ç”¨æˆ·äº§ç”Ÿï¼Œå°±å¯ä»¥ä½¿ç”¨throwè¯­å¥æ¥å®žçŽ°ã€‚ä¸€èˆ¬ä¸Žè‡ªå®šä¹‰çš„å¼‚å¸¸ç±»æ­é…ä½¿ç”¨ã€‚
 
-Îå.¶ÏÑÔ£ºÆô¶¯¶ÏÑÔÐèÒªÊ¹ÓÃ-ea²ÎÊý´«¸øÐéÄâ»ú£¬ÊÖ¹¤¿ªÆô£¬Ä¬ÈÏ²»¿ªÆô¶ÏÑÔ¡£
-AssertionError£º¶ÏÑÔÒì³££¨´íÎó£©->·ÇÊÜ²éÒì³£
+äº”.æ–­è¨€ï¼šå¯åŠ¨æ–­è¨€éœ€è¦ä½¿ç”¨-eaå‚æ•°ä¼ ç»™è™šæ‹Ÿæœºï¼Œæ‰‹å·¥å¼€å¯ï¼Œé»˜è®¤ä¸å¼€å¯æ–­è¨€ã€‚
+AssertionErrorï¼šæ–­è¨€å¼‚å¸¸ï¼ˆé”™è¯¯ï¼‰->éžå—æŸ¥å¼‚å¸¸
 
 
 

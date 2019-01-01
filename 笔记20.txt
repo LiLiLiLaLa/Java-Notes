@@ -1,0 +1,56 @@
+****1.Map集合使用迭代器（Iterator）输出****
+Set<Map.Entry<K,V>> entrySet();//将Map集合转为Set集合
+
+1.栈和队列
+1.1.栈：先进后出
+应用：函数栈帧，浏览器标签页后退，安卓Activity后退功能，编辑器的撤销
+Stack类：
+入栈：push()
+出栈：pop()
+返回栈顶元素：peek()
+面试题：自己实现一个html识别器
+
+
+1.2.队列FIFO：先进先出
+应用：消息队列：kafka,RobitMQ
+Queue接口——linkedList
+Queue<Integer> queue = new LinkedList<>();
+入队列：add()
+出队列：poll()
+返回队列头元素：peek()
+
+2.资源文件操作（properties属性文件）——资源文件都是K-V格式，并且无论key值还是value值都是String类型
+设置属性
+setProperty(String key,String value)
+取得属性
+getProperty(String key):String
+若没有指定key，返回null
+getProperty(String key,String defaultValue):若没有指定key，返回默认值
+将资源输入输出到目标终端
+输出到目标终端：store(OuptStream out,String coments);
+从目标终端中读取数据：load(InputStream in);
+
+3.Collections工具类
+Array——Arrays
+Executor——Exceutors
+Collection——Collecionds
+
+3.1.将线程不安全集合包装为线程安全集合（不推荐）：在add、remove等修改方法中，用同步代码块保证线程安全，效率较低，要使用线程安全集合，推荐使用juc包下的并发集合类（ConcurrentHashMap，CopyOnWriteArrayList）
+
+3.2.集合排序：collections.sort(集合名称)
+
+3.3.集合翻转：collections.reverse(集合名称)
+
+4.1.Stream数据流（JDK1.8新增）：Collection接口
+核心方法：
+取得Stream流
+Stream<E> Sream()
+
+4.2.常用方法
+集合输出：forEach
+数据过滤：filter
+取得最大最小值：max/min
+
+5.Map/Reduce模型
+map()：数据的前期处理工作
+reduce()：数据的后期收集

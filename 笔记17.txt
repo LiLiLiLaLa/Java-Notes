@@ -168,6 +168,10 @@ readline()直接读取一行输入，默认以回车换行
 8.2.java.util.Scanner
 支持正则表达式
 
-hasNextXX():判断是否有指定类型数据输入
+输入：Scanner
+hasNextXX():判断是否有指定类型数据输入，Scanner默认碰到空格、换行、Tab都是分隔符
 nextXX():获取指定类型数据
-useDelimiter("指定分隔符")
+useDelimiter("指定分隔符")：自定义分隔符（一般不用）
+
+无论如何定义分隔符，enter键表示本次输入完毕
+

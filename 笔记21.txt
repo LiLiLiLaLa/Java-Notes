@@ -1,0 +1,124 @@
+1.深浅拷贝（对象）
+Cloneable：CloneNotSupportedException
+只有子类实现了Cloneable接口才可以使用Object类中提供的Clone方法
+
+protected native Object clone() throws CloneNotSupportedException;
+要想让对象具有拷贝功能，必须实现Cloneable接口（标识接口，表示此类允许被clone），并且在类中自定义clone，调用Object类提供的继承权限clone方法
+
+1.1.浅拷贝：对象值拷贝，对于浅拷贝而言，拷贝出来的对象仍然保留原对象的所有引用
+问题：牵一发而动全身，只要任意一个拷贝对象（或原对象）中的引用发生改变，所有对象均会受到影响
+
+1.2.深拷贝：拷贝出来的对象产生了所有引用的新的对象
+特点：修改任意对象不会对其他对象产生影响
+
+如何实现深拷贝：
+a.包含的其他类继续实现Cloneable接口，并且调用Clone方法（递归实现Clone）
+b.使用序列化：无需再实现Cloneable接口，只要实现Serializable即可
+
+1.3.延迟拷贝：深拷贝+浅拷贝
+
+2.序列化
+概念：将内存中保存的对象变为二进制流进行输出或保存在文本中（对象—>二进制流）
+
+要想让类支持序列化，必须实现Serializable接口，Serializable接口为标识接口，只要实现了Serializable的类才具备对象序列化的功能
+
+具体实现序列化与反序列化（二进制流还原成对象）需要使用IO包中提供的两个处理类：
+序列化类ObjectOutputStream：
+选择目标终端：public ObjectOutputStream(OutputStream out) throws IOException
+writeObject(Object obj)：将obj变成二进制流输出到目标终端
+
+反序列化类ObjectInputStream：
+选择反序列化目标终端：public ObjectInputStream(InputStream in) throws IOException
+public final Object readObject()：将二进制流反序列化为对象
+
+transient关键字：若希望类中的若干属性不被序列化，可以再属性前面添加transient关键字
+
+
+class Teacher implements Serializable{
+    private String name;
+    private String job;
+
+    public Teacher(String name, String job) {
+        this.name = name;
+        this.job = job;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+}
+
+class Student implements Serializable{
+
+    private String name;
+    private int age;
+    private Teacher teacher;
+
+    public Student(String name, int age, Teacher teacher) {
+        this.name = name;
+        this.age = age;
+        this.teacher = teacher;
+    }
+
+    public Student cloneObject() throws Exception{
+        ByteOutputStream bos = new ByteOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(this);
+        ByteArrayInputStream bis = new ByteArrayInputStream(bos.getBytes());
+        ObjectInputStream ois = new ObjectInputStream(bis);
+        return (Student) ois.readObject();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+}
+public class Test {
+    public static void main(String[] args) throws Exception{
+        Teacher teacher = new Teacher("刘益铭","Java Teacher");
+        Student student = new Student("侯老板",18,teacher);
+        Student studentClone = student.cloneObject();
+        System.out.println(student);
+        System.out.println(studentClone);
+        System.out.println("=================");
+        System.out.println(studentClone.getName());
+        System.out.println(studentClone.getAge());
+        System.out.println(studentClone.getTeacher().getName());
+        System.out.println(studentClone.getTeacher().getJob());
+        System.out.println("------------------------------");
+        System.out.println(teacher == studentClone.getTeacher());
+    }
+}

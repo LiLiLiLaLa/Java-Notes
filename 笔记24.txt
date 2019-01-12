@@ -1,0 +1,10 @@
+Socket编程：服务器端客户端：连接服务器时需要指定服务器IP（标识电脑）与端口号（标识电脑上的某个具体应用）
+ServerSocket：基站类，服务器Socket类
+public ServerSocket(int port)：在本机根据指定端口号创建服务器
+public Socket accept()：侦听并接受连接到本服务器的客户端连接，此方法会一直阻塞直到有一个客户端成功连接，返回此连接
+
+Socket类：客户端类
+public Socket(String host,int port)：根据指定的IP和端口号创建套接字并连接到远程服务器
+public InputStream getInputStream()：返回此套接字的输入流
+public OutputStream getOutputStream()：返回此套接字的输出流
+

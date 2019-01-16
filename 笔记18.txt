@@ -1,4 +1,4 @@
-Java类集（数据结构——多线程）java.util包下
+﻿Java类集（数据结构——多线程）java.util包下
 动态数组（当元素个数达到最大值时，动态增加容量）
 
 1.1.Java类集的产生——JDK1.2
@@ -40,7 +40,7 @@ e：遍历区别：Vector支持较老的迭代器Enumeration，ArrayList不支�
 B：ArrayList与LinkedList
 ArrayList底层使用双向链表实现，ArrayList底层采用数组实现
 
-1.4.Set接口：不允许数据重复
+1.4.Set接口：不允许数据重复（Set接口就是value值相同的Map集合，现有Map再有的Set）
 Set接口没有扩充方法
 
 Set常用子类

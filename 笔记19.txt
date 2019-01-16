@@ -1,0 +1,79 @@
+1.Comparator（外部排序接口）——相比于Comparable接口更加灵活
+若要控制某个自定义类的顺序，而该类本身不支持排序（类的本身没有实现Comparable接口），我们可以建立一个该类的“比较器”来进行排序，比较器实现Comparator接口即可。
+
+“比较器”：实现了Comparator接口的类作为比较器，通过该比较器来进行类的排序。
+
+int compare(T o1,T o2);
+返回值和Compare to一样
+返回正数表示 o1 > o2
+返回负数表示 o1 < o2
+返回0表示 o1 = o2
+
+实现了Comparator接口进行第三方排序——策略模式，此方法更加灵活，可以轻松改变策略进行第三方的排序算法。
+
+Comparable与Comparator接口的关系：Comparable是排序接口，若类实现了Comparable接口，意味着该类支持排序，是一个内部比较器（自己去和别人比）；Comparator接口是比较器接口，类本身不支持排序，专门有若干个第三方的比较器（实现了Comparator接口的类）来进行类的排序，是一个外部比较器（策略模式）。 
+
+重复元素的比较TreeSet与TreeMap依靠Comparator或Comparable接口来区分重复元素。自定义类想要保存在TreeSet或TreeMap中：
+a.要么该类直接实现Comparable接口，覆写compareTo方法
+b.要么实现一个比较器传入TreeSet或TreeMap来进行外部比较
+
+而HashSet与HashMap并不依赖比较接口。此时要想区分自定义的元素是否重复，需要同时覆写equals与hashCode方法。
+
+首先覆写equals()方法来判断两个元素内容是否相等。
+
+覆写equals方法原则：
+a.自反性：对于任何非空引用值x，x.equals(x)都返回true
+b.对称性：对于任何非空的x和y，当且仅当x.equaks(y)返回true，那么y.equals(x)也返回true
+c.传递性：对于任何非空的x，y，z，如果x.equals(y)返回true，y.equals(z)返回true，一定有x.equals(z)返回true
+d.一致性：对于任何非空的x，y，若x与y中属性没有变，多次调用x.equals(y)始终返回true或false
+e.非空性：对于任何非空引用x，x.equals(null)一定返回false
+
+public boolean equals(Object obj){
+//自反性
+if(obj == this){
+return true;
+}
+//非空性
+else if(obj == null){
+return false;
+}
+else if(!(obj instanceof Person)){
+return false;
+}
+//比较属性
+Person per = (Person)obj;
+return per.age.equals(this.age) && per.name.equals(this.name);
+}
+
+哈希表存放数据过程：
+先调用hashCode计算出对象hash码决定存放的数据桶，而后使用equals来比较元素是否相等，若相等则不再放置元素；若equals返回false，则在相同桶之后，使用链表将若干元素链起来。
+
+Object类提供的hashCode方法默认使用对象的地址进行hash
+
+若两个对象equals方法返回true，他们的hashCode必然要保证相等，两个对象的hashCode相同，他们的equals方法不一定相等。当且仅当hashCode与equals方法均返回true，才认为两个对象相等。
+
+ 哈希表：为何要分桶来存放元素？
+为了优化比较次数
+
+2.集合输出（迭代器输出）——Iterator接口
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

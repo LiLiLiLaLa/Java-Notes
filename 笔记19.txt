@@ -56,24 +56,142 @@ Object类提供的hashCode方法默认使用对象的地址进行hash
 为了优化比较次数
 
 2.集合输出（迭代器输出）——Iterator接口
+迭代器：为了遍历集合而生。——迭代器模式
+
+Iterator接口两个核心方法：
+boolean hasNext()；判断是否还有元素
+E next()；取得下一个元素
+
+2.1.迭代输出Iterator——只能从前向后输出（只有Collection接口提供）
+调用Collection集合子类的Iterator方法取得内置的迭代器，使用一下输出格式
+
+while(iterator.hasNext()){
+System.out.println(iterator.next());
+}
+
+import java.util.*;
+//取得Iterator迭代器来输出
+public class test{
+public static void main(String[] args) {
+List<String> list = new ArrayList<>();
+list.add("Hello");
+list.add("My");
+list.add("Son");
+//取得ArrayList的迭代器
+Iterator<String> iterator = list.iterator();
+while(iterator.hasNext()){
+System.out.println(iterator.next());
+}
+}
+}
+//输出
+//Hello
+//My
+//Son
+
+2.2.双向迭代窗口ListIterator——可以从前向后也可以从后往前（List接口提供，Set不支持）
+boolean hasNext()；判断是否还有元素
+E next()；取得下一个元素
+hasPrevious()；判断是否有上一个元素
+previous()；取得上一个元素
+注：要想使用从后向前遍历，首先至少要从前向后遍历一次
+
+import java.util.*;
+
+public class test{
+public static void main(String[] args) {
+List<String> list = new ArrayList<>();
+list.add("Hello");
+list.add("My");
+list.add("Son");
+//取得ArrayList的双向迭代器
+ListIterator<String> iterator = list.listIterator();
+while(iterator.hasNext()){
+System.out.println(iterator.next());
+}
+System.out.println("------------------------");
+while(iterator.hasPrevious()){
+System.out.println(iterator.previous());
+}
+}
+}
+//输出
+//Hello
+//My
+//Son
+//------------------------
+//Son
+//My
+//Hello
+
+2.3.Enumeration（JDK1.0）枚举输出——只有Vector类支持
+hasMoreElement()：判断是否有下一个元素
+nextElements()：取得下一个元素
+
+import java.util.*;
+
+public class test{
+public static void main(String[] args) {
+Vector<String> vector = new Vector<>();
+vector.add("Hello");
+vector.add("My");
+vector.add("Son");
+Enumeration<String> enumeration = vector.elements();
+while(enumeration.hasMoreElements()){
+System.out.println(enumeration.nextElement());
+}
+}
+}
+//输出
+//Hello
+//My
+//Son
+
+2.4.for-each输出（所有子类都满足）
+能使用foreach输出的本质在于各个集合类都内置了迭代器
+
+2.5.fail-fast机制：快速失败策略
+ConcurrentModificationException发生在Collection集合使用迭代器遍历时，使用了集合类提供的修改集合内容的方法报错。而如果使用Iterator迭代器的remove()方法则不会出现此错误。
 
 
+final void checkForComodification(){
+if(modCout != expectedModCount)
+throw new ConcurrentModificationExeption();
+}
 
+Collection集合中的modCount表示当前集合修改的次数。多并发是时防止用户遍历时集合内容被修改，防止读脏数据。
 
+expectedModCount是迭代器中记录当前集合的修改次数。当取得集合迭代器时（即调用list.iterator()），expectedModCount = modCount，换言之，迭代器就是当前集合的一个副本（拷贝）。
 
+快速失败策略保证了所有用户在进行迭代器遍历集合时，拿到的数据一定是最新的数据（避免“脏读”产生 ）
 
+fail-safe：不产生ConcurrentModificationException异常，juc包下所有线程安全集合（CopyOnWriteArrayList）
 
+总结：以后在迭代器遍历时不要修改集合内容
 
+3.Map集合
+Map接口是保存二元偶对象（键值对）的最顶层接口
+public interface Map<K,V>
+key值唯一，通过一个key值一定能找到唯一一个value值，反之则不一定。我们将这种K、V值叫做键值对
 
+Map接口核心方法
+public V put(K key,V value)：向Map中添加数据
+public V get(K key)：根据指定的Key值取得相应的Value值，若没有key值返回null
+public Set<Map.Entry<K,V>> entrySet()：将Map集合变为Set集合
+public Set<K> keyset()：返回所有key值集合，key不能重复
+public Collection<V> values()：返回所有value值，value可以重复
 
+Map本身是一个接口，在Map之下有四个常用子类：HashMap（使用频率最高—必考）、TreeMap、ConcurrentMap、HashTable
 
+Map接口使用：
+HashMap类比HashSet
+a.允许key和value为null，且key值有且只有一个为null，value可以有任意多个null
+b.JDK1.2产生
+c.异步处理效率高，线程不安全
+d.底层是哈希表+红黑树（JDK8），JDK8以前只有红黑树
 
-
-
-
-
-
-
-
-
-
+HashTable
+a.key与value均不允许为null
+b.JDK1.0产生
+c.使用方法上加锁，效率低，线程安全
+d.底层哈希表

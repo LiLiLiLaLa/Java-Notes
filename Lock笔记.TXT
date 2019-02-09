@@ -17,6 +17,7 @@ FutureTask fu = new FutureTask(th);
 new Thread(fu).start();
 fu.get();
 
+
 2.多线程方法
 
 3.线程同步
